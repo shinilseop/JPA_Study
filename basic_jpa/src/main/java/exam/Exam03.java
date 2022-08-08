@@ -1,11 +1,13 @@
-import domain.Member;
+package exam;
+
+import domain.Order;
+import domain.OrderItem;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 
-public class Main {
-
+public class Exam03 {
   public static void main(String[] args) {
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("hello");
     EntityManager em = emf.createEntityManager();
@@ -13,19 +15,16 @@ public class Main {
 
     tx.begin();
 
-    Member member = new Member();
-    member.setId(3L);
-    member.setName("test");
+    try {
+      Order order = new Order();
+      order.addOrderItem(new OrderItem());
 
-    em.persist(member);
-
-    Member result = em.find(Member.class, member.getId());
-    System.out.println("@@name:"+result.getName());
-
-    tx.commit();
-
-    em.close();
-
-    emf.close();
+      tx.commit();
+    } catch (Exception e) {
+      e.printStackTrace();
+    } finally {
+      em.close();
+      emf.close();
+    }
   }
 }
